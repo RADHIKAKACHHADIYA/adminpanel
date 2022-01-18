@@ -21,6 +21,7 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { NavLink } from 'react-router-dom';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -101,6 +102,7 @@ export default function MiniDrawer({children}) {
   };
 
   const item = [
+      {to: '/' , label: "Daseborad" , icon: <DashboardIcon/>},
       {to: '/doctor' , label: "Doctor" , icon: <PersonRoundedIcon/>},
       {to: '/medicine' , label: "Medicine" ,icon: <LocalHospitalIcon/>},
       {to: '/patients' , label: "Patients" , icon : <AccessibilityIcon/>}

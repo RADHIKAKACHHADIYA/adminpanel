@@ -7,7 +7,7 @@ function Daseborad(props) {
         <div>
             <Box>
                 <Typography variant="h2" >
-                    Heading
+                    Daseborad
                 </Typography>;
             </Box>
         </div>

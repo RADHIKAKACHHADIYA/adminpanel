@@ -7,7 +7,7 @@ function Patients(props) {
         <div>
             <Box>
                 <Typography variant="h2" >
-                    Heading
+                Patients
                 </Typography>;
             </Box>
         </div>

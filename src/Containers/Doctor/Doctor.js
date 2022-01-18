@@ -7,7 +7,7 @@ function Doctor(props) {
         <div>
             <Box>
                 <Typography variant="h2" >
-                    Heading
+                    Doctor
                 </Typography>;
             </Box>
         </div>
