@@ -11,18 +11,26 @@ import { Form, FormikProvider, useFormik } from "formik";
 
 function AddMedicine({ openprops, handleClose }) {
 
-    
+    const handleAdd = (values) => {
+        console.log(values)
+        let localdata = JSON.parse(localStorage.getItem("medicine"))
+        console.log(localdata)
+        if (localdata === null){
+            localStorage.setItem("medicine", JSON.stringify([values]))
+          } else {
+            localdata.push(values)
+            localStorage.setItem("medicine", JSON.stringify(localdata))
+          }
+    };
     let AddSchema = {
         name: yup.string()
             .required("Name is must be requrired"),
-        price: yup.string()
+        price: yup.number()
             .required("Price is must be requrired"),
-        // .positive("invalid number"),
-        quantity: yup.string()
+        quantity: yup.number()
             .required("Quantity is must be requrired"),
-        expiry: yup.string()
-            .required("Expiry is must be requrired")
-            .min(4, "Password is must 4 character long"),
+        expiry: yup.number()
+            .required("Expiry is must be requrired"),
     };
 
     let schema = yup.object().shape(AddSchema)
@@ -34,23 +42,29 @@ function AddMedicine({ openprops, handleClose }) {
             quantity: "",
             expiry: "",
         },
+        validationSchema: schema,
+        onSubmit: (values) => {
+            console.log("onSubmit") 
+            handleAdd(values)
+        }
     });
 
-    const { handleSubmit, errors, getFieldProps } = formik;
+
+    const { handleSubmit, errors, touched, getFieldProps } = formik;
 
 
     return (
         <div>
-            <FormikProvider value={formik}>
-                <Form onSubmit={handleSubmit}                  > 
+            
                     <Dialog open={openprops} onClose={handleClose}>
+                    <FormikProvider value={formik}>
+                <Form onSubmit={handleSubmit}>
                         <DialogTitle>Add Medicine</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
                                 local storage
                             </DialogContentText>
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="name"
                                 label="Medicine Name"
@@ -58,11 +72,10 @@ function AddMedicine({ openprops, handleClose }) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("name")}
-                                errors={Boolean(errors.name)}
-                                errorMessage={errors.name}
+                                error={Boolean(errors.name && touched.name)}
+                                helperText={(errors.name && touched.name) && errors.name}
                             />
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="price"
                                 label="Medicine Price"
@@ -70,11 +83,10 @@ function AddMedicine({ openprops, handleClose }) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("price")}
-                                errors={Boolean(errors.price)}
-                                errorMessage={errors.price}
+                                error={Boolean(errors.price && touched.price)}
+                                helperText={(errors.price && touched.price) && errors.price}
                             />
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="quantity"
                                 label="Medicine Quantity"
@@ -82,11 +94,10 @@ function AddMedicine({ openprops, handleClose }) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("quantity")}
-                                errors={Boolean(errors.quantity)}
-                                errorMessage={errors.quantity}
+                                error={Boolean(errors.quantity  && touched.quantity)}
+                                helperText={(errors.quantity  && touched.quantity) && errors.quantity}
                             />
                             <TextField
-                                autoFocus
                                 margin="dense"
                                 id="expiry"
                                 label="Medicine Expiry"
@@ -94,17 +105,18 @@ function AddMedicine({ openprops, handleClose }) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("expiry")}
-                                errors={Boolean(errors.expiry)}
-                                errorMessage={errors.expiry}
+                                error={Boolean(errors.expiry && touched.expiry) }
+                                helperText={(errors.expiry && touched.expiry) && errors.expiry}
                             />
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
-                            <Button onClick={handleClose}>Submit</Button>
+                            <Button type="submit">Submit</Button>
                         </DialogActions>
-                    </Dialog>
-                </Form>
+                        </Form>
             </FormikProvider>
+                    </Dialog>
+               
         </div>
     );
 }
