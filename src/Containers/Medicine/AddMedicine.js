@@ -9,7 +9,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Form, FormikProvider, useFormik } from "formik";
 
-function AddMedicine({ openprops, handleClose }) {
+function AddMedicine({ openprops, handleClose ,loadData}) {
 
     const handleAdd = (values) => {
         console.log(values)
@@ -21,14 +21,17 @@ function AddMedicine({ openprops, handleClose }) {
             localdata.push(values)
             localStorage.setItem("medicine", JSON.stringify(localdata))
           }
+          
+          handleClose()
+          loadData()
     };
     let AddSchema = {
         name: yup.string()
             .required("Name is must be requrired"),
         price: yup.number()
             .required("Price is must be requrired"),
-        quantity: yup.number()
-            .required("Quantity is must be requrired"),
+            qunatity: yup.number()
+            .required("qunatity is must be requrired"),
         expiry: yup.number()
             .required("Expiry is must be requrired"),
     };
@@ -39,7 +42,7 @@ function AddMedicine({ openprops, handleClose }) {
         initialValues: {
             name: "",
             price: "",
-            quantity: "",
+            qunatity: "",
             expiry: "",
         },
         validationSchema: schema,
@@ -88,14 +91,14 @@ function AddMedicine({ openprops, handleClose }) {
                             />
                             <TextField
                                 margin="dense"
-                                id="quantity"
-                                label="Medicine Quantity"
+                                id="qunatity"
+                                label="Medicine qunatity"
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                {...getFieldProps("quantity")}
-                                error={Boolean(errors.quantity  && touched.quantity)}
-                                helperText={(errors.quantity  && touched.quantity) && errors.quantity}
+                                {...getFieldProps("qunatity")}
+                                error={Boolean(errors.qunatity  && touched.qunatity)}
+                                helperText={(errors.qunatity  && touched.qunatity) && errors.qunatity}
                             />
                             <TextField
                                 margin="dense"
