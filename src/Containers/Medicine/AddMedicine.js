@@ -1,5 +1,5 @@
 import React from 'react';
-import * as yup from "yup";
+import * as yup from 'yup';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -8,29 +8,38 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Form, FormikProvider, useFormik } from "formik";
+import { useSnackbar } from 'notistack';
 
-function AddMedicine({ openprops, handleClose ,loadData}) {
+function AddMedicine({ openprops, handleClose, loadData }) {
 
     const handleAdd = (values) => {
-        console.log(values)
         let localdata = JSON.parse(localStorage.getItem("medicine"))
-        console.log(localdata)
-        if (localdata === null){
-            localStorage.setItem("medicine", JSON.stringify([values]))
-          } else {
-            localdata.push(values)
+        let data = {...values , "id" : Math.floor(Math.random() * 100) + 1}
+        if (localdata === null) {
+            localStorage.setItem("medicine", JSON.stringify([data]))
+        } else {
+            localdata.push(data)
             localStorage.setItem("medicine", JSON.stringify(localdata))
-          }
-          
-          handleClose()
-          loadData()
+        }
+
+        handleClose()
+        loadData()
+        enqueueSnackbar('Succesfully ad' ,
+        {
+            variant: 'info',
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'right',
+            },
+        });
     };
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar()
     let AddSchema = {
         name: yup.string()
             .required("Name is must be requrired"),
         price: yup.number()
             .required("Price is must be requrired"),
-            qunatity: yup.number()
+        qunatity: yup.number()
             .required("qunatity is must be requrired"),
         expiry: yup.number()
             .required("Expiry is must be requrired"),
@@ -47,7 +56,7 @@ function AddMedicine({ openprops, handleClose ,loadData}) {
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            console.log("onSubmit") 
+            console.log("onSubmit")
             handleAdd(values)
         }
     });
@@ -58,10 +67,10 @@ function AddMedicine({ openprops, handleClose ,loadData}) {
 
     return (
         <div>
-            
-                    <Dialog open={openprops} onClose={handleClose}>
-                    <FormikProvider value={formik}>
-                <Form onSubmit={handleSubmit}>
+
+            <Dialog open={openprops} onClose={handleClose}>
+                <FormikProvider value={formik}>
+                    <Form onSubmit={handleSubmit}>
                         <DialogTitle>Add Medicine</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
@@ -97,8 +106,8 @@ function AddMedicine({ openprops, handleClose ,loadData}) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("qunatity")}
-                                error={Boolean(errors.qunatity  && touched.qunatity)}
-                                helperText={(errors.qunatity  && touched.qunatity) && errors.qunatity}
+                                error={Boolean(errors.qunatity && touched.qunatity)}
+                                helperText={(errors.qunatity && touched.qunatity) && errors.qunatity}
                             />
                             <TextField
                                 margin="dense"
@@ -108,7 +117,7 @@ function AddMedicine({ openprops, handleClose ,loadData}) {
                                 fullWidth
                                 variant="standard"
                                 {...getFieldProps("expiry")}
-                                error={Boolean(errors.expiry && touched.expiry) }
+                                error={Boolean(errors.expiry && touched.expiry)}
                                 helperText={(errors.expiry && touched.expiry) && errors.expiry}
                             />
                         </DialogContent>
@@ -116,10 +125,10 @@ function AddMedicine({ openprops, handleClose ,loadData}) {
                             <Button onClick={handleClose}>Cancel</Button>
                             <Button type="submit">Submit</Button>
                         </DialogActions>
-                        </Form>
-            </FormikProvider>
-                    </Dialog>
-               
+                    </Form>
+                </FormikProvider>
+            </Dialog>
+
         </div>
     );
 }
