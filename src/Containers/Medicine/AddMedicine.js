@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -9,12 +9,50 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useSnackbar } from 'notistack';
+import Medicine from './Medicine';
 
-function AddMedicine({ openprops, handleClose, loadData }) {
+function AddMedicine({ openprops, handleClose, loadData, Edit }) {
+
+    const [update, setUpdate] = useState()
+
+    useEffect(
+        () => {
+            setUpdate(Edit)
+        },
+        [Edit])
+
+    // console.log(Edit)
+
+    const handleEdit = (values) => {
+
+        let data = {
+            "id" : update ? update.id : '' ,
+            "name" : values.name , 
+            "price" : parseInt(values.price) , 
+            "qunatity" : parseInt(values.qunatity) , 
+            "expiry" : parseInt(values.expiry) 
+        }
+        console.log(data)
+        let localdata = JSON.parse(localStorage.getItem('medicine'))
+        const udata = localdata.map((l) => {
+            if (l.id === update.id) {
+                return data 
+            } else {
+                return l
+            }
+        })
+        localStorage.setItem("medicine", JSON.stringify(udata))
+
+        
+        handleClose()
+        loadData()
+        setUpdate()
+    }
+
 
     const handleAdd = (values) => {
         let localdata = JSON.parse(localStorage.getItem("medicine"))
-        let data = {...values , "id" : Math.floor(Math.random() * 100) + 1}
+        let data = { ...values, "id": Math.floor(Math.random() * 100) + 1 }
         if (localdata === null) {
             localStorage.setItem("medicine", JSON.stringify([data]))
         } else {
@@ -24,14 +62,14 @@ function AddMedicine({ openprops, handleClose, loadData }) {
 
         handleClose()
         loadData()
-        enqueueSnackbar('Succesfully ad' ,
-        {
-            variant: 'info',
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'right',
-            },
-        });
+        enqueueSnackbar('Succesfully ad',
+            {
+                variant: 'info',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+            });
     };
     const { enqueueSnackbar, closeSnackbar } = useSnackbar()
     let AddSchema = {
@@ -48,21 +86,26 @@ function AddMedicine({ openprops, handleClose, loadData }) {
     let schema = yup.object().shape(AddSchema)
 
     const formik = useFormik({
+        enableReinitialize: true ,
         initialValues: {
-            name: "",
-            price: "",
-            qunatity: "",
-            expiry: "",
+            name: update ? update.name : "",
+            price: parseInt(update ? update.price : ""),
+            qunatity: parseInt(update ? update.qunatity : ""),
+            expiry: parseInt(update ? update.expiry : ""),
         },
         validationSchema: schema,
         onSubmit: (values) => {
-            console.log("onSubmit")
-            handleAdd(values)
+            if(update ) {
+                handleEdit(values)
+            } else {
+                handleAdd(values)
+            }
+           
         }
     });
 
 
-    const { handleSubmit, errors, touched, getFieldProps } = formik;
+    const { handleSubmit, errors, touched,handleChange,handleBlur, getFieldProps } = formik;
 
 
     return (
@@ -82,8 +125,10 @@ function AddMedicine({ openprops, handleClose, loadData }) {
                                 label="Medicine Name"
                                 type="text"
                                 fullWidth
+                                defaultValue={update ? update.name : ''}
                                 variant="standard"
-                                {...getFieldProps("name")}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 error={Boolean(errors.name && touched.name)}
                                 helperText={(errors.name && touched.name) && errors.name}
                             />
@@ -94,7 +139,9 @@ function AddMedicine({ openprops, handleClose, loadData }) {
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                {...getFieldProps("price")}
+                                defaultValue={update ? update.price : ''}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 error={Boolean(errors.price && touched.price)}
                                 helperText={(errors.price && touched.price) && errors.price}
                             />
@@ -105,7 +152,9 @@ function AddMedicine({ openprops, handleClose, loadData }) {
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                {...getFieldProps("qunatity")}
+                                defaultValue={update ? update.qunatity : ''}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 error={Boolean(errors.qunatity && touched.qunatity)}
                                 helperText={(errors.qunatity && touched.qunatity) && errors.qunatity}
                             />
@@ -116,14 +165,18 @@ function AddMedicine({ openprops, handleClose, loadData }) {
                                 type="text"
                                 fullWidth
                                 variant="standard"
-                                {...getFieldProps("expiry")}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                defaultValue={update ? update.expiry : ''}
                                 error={Boolean(errors.expiry && touched.expiry)}
                                 helperText={(errors.expiry && touched.expiry) && errors.expiry}
                             />
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit">
+                                {update ? "Update" : "Add"}
+                            </Button>
                         </DialogActions>
                     </Form>
                 </FormikProvider>

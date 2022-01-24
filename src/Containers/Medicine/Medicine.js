@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import { Button, Typography } from '@mui/material';
 import AddMedicine from './AddMedicine';
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -59,6 +60,7 @@ function Medicine(props) {
     const [dopen, setdOpen] = useState(false);
     const [data, setData] = useState([]);
     const [id, setId] = useState();
+    const [Edit, setEdit] = useState();
 
     useEffect(
         () => {
@@ -87,17 +89,18 @@ function Medicine(props) {
         setdOpen(filterData)
         setData(filterData)
         handleClose();
-        enqueueSnackbar('Succesfully Deleted' ,
-        {
-            variant: 'success',
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'right',
-            },
-        });
+        enqueueSnackbar('Succesfully Deleted',
+            {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+            });
     }
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -106,6 +109,15 @@ function Medicine(props) {
         setOpen(false);
         setdOpen(false);
     };
+    const handleEdit = (id) => {
+        let localdata = JSON.parse(localStorage.getItem("medicine"));
+
+        let filterData = localdata.filter((l) => l.id === id)
+
+        setEdit(filterData[0])
+        setOpen(filterData)
+
+    }
 
     return (
         <div>
@@ -121,7 +133,8 @@ function Medicine(props) {
                     </Button>
                 </Box>
 
-                <AddMedicine openprops={open} handleClose={handleClose} loadData={loadData} />
+                <AddMedicine openprops={open} handleClose={handleClose} loadData={loadData} Edit={Edit} />
+
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
@@ -145,7 +158,10 @@ function Medicine(props) {
                                     <TableCell align="right">{row.qunatity}</TableCell>
                                     <TableCell align="right">{row.expiry}</TableCell>
                                     <TableCell align="right">
-                                        <IconButton aria-label="delete" onClick={() => {setdOpen(true) ; setId(row.id)}}>
+                                        <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="delete" onClick={() => { setdOpen(true); setId(row.id) }}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </TableCell>
@@ -166,7 +182,7 @@ function Medicine(props) {
                     <DialogActions>
                         <Button onClick={handleClose}>No</Button>
                         <Button onClick={handledelete} autoFocus>
-                            Yes 
+                            Yes
                         </Button>
                     </DialogActions>
                 </Dialog>

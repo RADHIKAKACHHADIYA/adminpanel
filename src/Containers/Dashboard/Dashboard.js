@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 
-function Daseborad(props) {
+function Dashboard(props) {
     return (
         <div>
             <Box>
@@ -14,4 +14,4 @@ function Daseborad(props) {
     );
 }
 
-export default Daseborad;
+export default Dashboard;
