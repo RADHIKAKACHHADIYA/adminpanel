@@ -78,7 +78,7 @@ function Medicine(props) {
     }
 
     const handledelete = () => {
-        console.log("handledelete")
+        // console.log("handledelete")
         let localdata = JSON.parse(localStorage.getItem("medicine"))
 
         let filterData = localdata.filter((l) => l.id !== id)
