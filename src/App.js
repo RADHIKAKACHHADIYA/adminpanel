@@ -5,11 +5,16 @@ import Doctor from './Containers/Doctor/Doctor';
 import Medicine from './Containers/Medicine/Medicine';
 import Patients from './Containers/Patients/Patients';
 import Layout from './Components/Layout/Layout';
+import { Provider } from 'react-redux';
+import configareStore from './redux/store';
+
 
 
 function App() {
+  let store = configareStore();
   return (
     <>
+    <Provider store={store}>
       <Layout>
         <Switch>
             <Route exact path="/" component={Daseborad}/>
@@ -18,6 +23,7 @@ function App() {
             <Route  path="/patients" component={Patients}/>
         </Switch>
       </Layout>
+      </Provider>
     </>
   );
 }

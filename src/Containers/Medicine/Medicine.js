@@ -15,44 +15,46 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSnackbar } from 'notistack';
+import { deleteMedicine } from '../../redux/action/medicine.action';
+import { useDispatch, useSelector } from 'react-redux';
 
-const orgData = [
-    {
-        id: 101,
-        name: 'Abacavir',
-        qunatity: 25,
-        price: 150,
-        expiry: 2022
-    },
-    {
-        id: 102,
-        name: 'Eltrombopag',
-        qunatity: 90,
-        price: 550,
-        expiry: 2021
-    },
-    {
-        id: 103,
-        name: 'Meloxicam',
-        qunatity: 85,
-        price: 450,
-        expiry: 2025
-    },
-    {
-        id: 104,
-        name: 'Allopurinol',
-        qunatity: 50,
-        price: 600,
-        expiry: 2023
-    },
-    {
-        id: 105,
-        name: 'Phenytoin',
-        qunatity: 63,
-        price: 250,
-        expiry: 2021
-    },
-]
+// const orgData = [
+//     {
+//         id: 101,
+//         name: 'Abacavir',
+//         qunatity: 25,
+//         price: 150,
+//         expiry: 2022
+//     },
+//     {
+//         id: 102,
+//         name: 'Eltrombopag',
+//         qunatity: 90,
+//         price: 550,
+//         expiry: 2021
+//     },
+//     {
+//         id: 103,
+//         name: 'Meloxicam',
+//         qunatity: 85,
+//         price: 450,
+//         expiry: 2025
+//     },
+//     {
+//         id: 104,
+//         name: 'Allopurinol',
+//         qunatity: 50,
+//         price: 600,
+//         expiry: 2023
+//     },
+//     {
+//         id: 105,
+//         name: 'Phenytoin',
+//         qunatity: 63,
+//         price: 250,
+//         expiry: 2021
+//     },
+// ]
 
 function Medicine(props) {
     const [open, setOpen] = useState(false);
@@ -60,17 +62,20 @@ function Medicine(props) {
     const [data, setData] = useState([]);
     const [id, setId] = useState();
 
+    const dispatch = useDispatch()
+    const medicine = useSelector()
+
+
     useEffect(
         () => {
-            loadData()
-
+            dispatch()
         },
         [])
     const loadData = () => {
         let localdata = JSON.parse(localStorage.getItem("medicine"))
         if (localdata === null) {
-            localdata = orgData
-            localStorage.setItem("medicine", JSON.stringify(orgData))
+            localdata = medicine.medicine
+            localStorage.setItem("medicine", JSON.stringify( medicine.medicine))
         } else {
             localdata = localdata
         }
@@ -79,13 +84,15 @@ function Medicine(props) {
 
     const handledelete = () => {
         // console.log("handledelete")
-        let localdata = JSON.parse(localStorage.getItem("medicine"))
+        // let localdata = JSON.parse(localStorage.getItem("medicine"))
 
-        let filterData = localdata.filter((l) => l.id !== id)
-        localStorage.setItem("medicine", JSON.stringify(filterData))
+        // let filterData = localdata.filter((l) => l.id !== id)
+        // localStorage.setItem("medicine", JSON.stringify(filterData))
 
-        setdOpen(filterData)
-        setData(filterData)
+        dispatch(deleteMedicine(id))
+
+        // setdOpen(filterData)
+        // setData(filterData)
         handleClose();
         enqueueSnackbar('Succesfully Deleted' ,
         {
