@@ -10,12 +10,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSnackbar } from 'notistack';
 import AddDoctor from './AddDoctor';
+import { deleteDocotrs, fetchDoctors } from '../../redux/action/doctor.action';
+import { useDispatch, useSelector } from 'react-redux';
+import Loder from '../../Components/Loder/Loder'
 
 const drData = [
     {
@@ -44,45 +48,34 @@ function Doctor(props) {
     const [dopen, setdOpen] = useState(false);
     const [data, setData] = useState([]);
     const [id, setId] = useState();
+    const dispatch = useDispatch();
+    const doctors = useSelector(state => state.doctors);
 
     useEffect(
         () => {
-            loadData()
+            dispatch(fetchDoctors())
 
         },
         [])
+
+    const handledelete = () => {
+
+        dispatch(deleteDocotrs(id))
+
+        handleClose();
+    }
+
     const loadData = () => {
-        let localdata = JSON.parse(localStorage.getItem("medicine"))
+        let localdata = JSON.parse(localStorage.getItem("doctors"))
         if (localdata === null) {
-            localdata = drData
-            localStorage.setItem("medicine", JSON.stringify(drData))
+            localdata = doctors.doctors
+            localStorage.setItem("doctors", JSON.stringify(doctors.doctors))
         } else {
             localdata = localdata
         }
         setData(localdata)
     }
 
-    const handledelete = () => {
-        // console.log("handledelete")
-        let localdata = JSON.parse(localStorage.getItem("medicine"))
-
-        let filterData = localdata.filter((l) => l.id !== id)
-        localStorage.setItem("medicine", JSON.stringify(filterData))
-
-        setdOpen(filterData)
-        setData(filterData)
-        handleClose();
-        enqueueSnackbar('Succesfully Deleted' ,
-        {
-            variant: 'success',
-            anchorOrigin: {
-                vertical: 'top',
-                horizontal: 'right',
-            },
-        });
-    }
-
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -92,32 +85,42 @@ function Doctor(props) {
         setdOpen(false);
     };
 
+    const handleEdit = (id) => {
+        // let localdata = JSON.parse(localStorage.getItem("doctors"));
+
+        let filterData = doctors.doctors.filter((d) => d.id === id)
+
+        setEdit(filterData[0])
+        setOpen(filterData)
+
+    }
+
     return (
         <div>
-                <Typography variant="h2" >
-                    Medicine
-                </Typography>
-                <Box sx={{
-                    float: 'right'
-                }}>
-                    <Button variant="outlined" onClick={handleClickOpen}>
-                        Add Medicine
-                    </Button>
-                </Box>
+            <Typography variant="h2" >
+                doctors
+            </Typography>
+            <Box sx={{
+                float: 'right'
+            }}>
+                <Button variant="outlined" onClick={handleClickOpen}>
+                    Add doctors
+                </Button>
+            </Box>
 
-                <AddDoctor openprops={open} handleClose={handleClose} loadData={loadData} />
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Madicine Name</TableCell>
-                                <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">qunatity</TableCell>
-                                <TableCell align="right">Expiry</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.map((row) => (
+            <AddDoctor openprops={open} handleClose={handleClose} loadData={loadData} edit={edit}/>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>doctors Name</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            !doctors.isLoading ?
+                            doctors.errorMsg === '' ?
+                            doctors.doctors.map((row) => (
                                 <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -125,35 +128,37 @@ function Doctor(props) {
                                     <TableCell component="th" scope="row">
                                         {row.name}
                                     </TableCell>
-                                    <TableCell align="right">{row.price}</TableCell>
-                                    <TableCell align="right">{row.qunatity}</TableCell>
-                                    <TableCell align="right">{row.expiry}</TableCell>
                                     <TableCell align="right">
-                                        <IconButton aria-label="delete" onClick={() => {setdOpen(true) ; setId(row.id)}}>
+                                        <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="delete" onClick={() => { setdOpen(true); setId(row.id) }}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <Dialog
-                    open={dopen}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Are you sure want to delete?"}
-                    </DialogTitle>
-                    <DialogActions>
-                        <Button onClick={handleClose}>No</Button>
-                        <Button onClick={handledelete} autoFocus>
-                            Yes 
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                            )) : <TableRow><TableCell className='text-info'>{doctors.errorMsg}</TableCell></TableRow>
+                            : <Loder message={"Please Wait"} />
+                        }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <Dialog
+                open={dopen}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure want to delete?"}
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleClose}>No</Button>
+                    <Button onClick={handledelete} autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
