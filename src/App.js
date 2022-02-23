@@ -6,12 +6,11 @@ import Medicine from './Containers/Medicine/Medicine';
 import Patients from './Containers/Patients/Patients';
 import Layout from './Components/Layout/Layout';
 import { Provider } from 'react-redux';
-import configareStore from './redux/store';
-
+import configureStore from './redux/store';
 
 
 function App() {
-  let store = configareStore();
+  const store = configureStore();
   return (
     <>
     <Provider store={store}>

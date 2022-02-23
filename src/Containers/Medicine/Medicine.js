@@ -11,11 +11,12 @@ import { Button, Typography } from '@mui/material';
 import AddMedicine from './AddMedicine';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSnackbar } from 'notistack';
-import { deleteMedicine } from '../../redux/action/medicine.action';
+import { deleteMedicine, fetchmedicine } from '../../redux/action/medicine.action';
 import { useDispatch, useSelector } from 'react-redux';
 
 // const orgData = [
@@ -61,14 +62,15 @@ function Medicine(props) {
     const [dopen, setdOpen] = useState(false);
     const [data, setData] = useState([]);
     const [id, setId] = useState();
+    const [edit , setEdit] = useState();
 
     const dispatch = useDispatch()
-    const medicine = useSelector()
+    const medicine = useSelector(state => state.medicine)
 
 
     useEffect(
         () => {
-            dispatch()
+            dispatch(fetchmedicine())
         },
         [])
     const loadData = () => {
@@ -104,7 +106,7 @@ function Medicine(props) {
         });
     }
 
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -114,6 +116,15 @@ function Medicine(props) {
         setdOpen(false);
     };
 
+    const handleEdit = (id) => {
+        // let localdata = JSON.parse(localStorage.getItem("medicine"));
+
+        let filterData = medicine.medicine.filter((l) => l.id === id)
+
+        setEdit(filterData[0])
+        setOpen(filterData)
+
+    }
     return (
         <div>
             <Box>
@@ -128,7 +139,7 @@ function Medicine(props) {
                     </Button>
                 </Box>
 
-                <AddMedicine openprops={open} handleClose={handleClose} loadData={loadData} />
+                <AddMedicine openprops={open} handleClose={handleClose} loadData={loadData} edit={edit}/>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
@@ -137,10 +148,11 @@ function Medicine(props) {
                                 <TableCell align="right">Price</TableCell>
                                 <TableCell align="right">qunatity</TableCell>
                                 <TableCell align="right">Expiry</TableCell>
+                                <TableCell align="right">Edit / Delete</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {data.map((row) => (
+                            {medicine.medicine.map((row) => (
                                 <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -152,6 +164,9 @@ function Medicine(props) {
                                     <TableCell align="right">{row.qunatity}</TableCell>
                                     <TableCell align="right">{row.expiry}</TableCell>
                                     <TableCell align="right">
+                                    <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
+                                            <EditIcon />
+                                        </IconButton>
                                         <IconButton aria-label="delete" onClick={() => {setdOpen(true) ; setId(row.id)}}>
                                             <DeleteIcon />
                                         </IconButton>

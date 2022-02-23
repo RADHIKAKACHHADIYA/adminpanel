@@ -4,9 +4,9 @@ const initialvalue ={
     medicine: [],
     errormsg : '',
     isLoding : false ,
-
 }
 const medicineReducer = (state=initialvalue , action) => {
+    console.log(action)
     switch (action.type) {
         case ActionType.LODING_MEDICINE :
             return {
@@ -18,7 +18,7 @@ const medicineReducer = (state=initialvalue , action) => {
         case ActionType.FATCH_MEDICINE :
             return {
                 ...state,
-                medicine : action.type,
+                medicine : action.payload,
                 errormsg : '',
                 isLoding : false
             }
@@ -26,13 +26,33 @@ const medicineReducer = (state=initialvalue , action) => {
             return {
                 ...state, 
                 medicine : [],
-                errormsg : action.type,
+                errormsg : action.payload,
                 isLoding : false
             }
         case ActionType.DELETE_MEDICINE :
             return {
                 ...state,
-                medicine : action.type.filter((l) => l.id !== action.payload.id),
+                medicine : state.medicine.filter((l) => l.id !== action.payload),
+                errormsg : '',
+                isLoding : false
+            }
+            case ActionType.ADD_MEDICINE :
+                return{
+                    ...state,
+                    medicine : state.medicine.concat(action.payload),
+                    errormsg : '',
+                    isLoding : false
+                }
+        case ActionType.EDIT_MEDICINE :
+            return {
+                ...state,
+                madicine : state.medicine.map((l) => {
+                    if(l.id === action.payload.id) {
+                        return action.payload
+                    } else {
+                        return l
+                    }
+                }),
                 errormsg : '',
                 isLoding : false
             }
