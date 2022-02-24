@@ -10,6 +10,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { addDoctors, editDoctors } from '../../redux/action/doctor.action';
 import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 function AddDoctor({ openprops, handleClose, loadData , edit }) {
 

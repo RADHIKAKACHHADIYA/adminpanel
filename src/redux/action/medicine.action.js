@@ -1,5 +1,4 @@
-import Delete from "@mui/icons-material/Delete";
-import Edit from "@mui/icons-material/Edit";
+
 import { baseUrl } from "../../url/baseUrl";
 import * as ActionType from "../ActionType";
 
@@ -7,8 +6,7 @@ import * as ActionType from "../ActionType";
 export const fetchmedicine = () => (dispatch) => {
     dispatch(loadingMedicine(true))
     setTimeout(function () {
-        return fetch(baseUrl
-            + 'medicine')
+        return fetch(baseUrl + 'medicine')
             .then(response => {
                 if (response.ok) {
                     return response;
@@ -62,7 +60,7 @@ export const deleteMedicine = (id) => (dispatch) => {
         .catch(error => errorMedicine(error));
 }
 export const addMedicine = (data) => (dispatch) => {
-    return fetch(baseUrl + 'medicine/', {
+    return fetch(baseUrl + 'medicine', {
         method: "post",
         body: JSON.stringify(data),
         headers: {'Content-type':'application/JSON'}

@@ -29,17 +29,17 @@ const doctorReducer = (state=initialValues, action) => {
                 errorMsg:  action.payload,
                 isLoading: false
             }
-        case ActionTypes.ADD_DOCTORS:
-            return {
-                ...state,
-                doctors: state.doctors.concat(action.payload),
-                errorMsg: '',
-                isLoading: false
-            }
         case ActionTypes.DELETE_DOCTORS:
             return {
                 ...state,
                 doctors: state.doctors.filter((l) => l.id !== action.payload),
+                errorMsg: '',
+                isLoading: false
+            }
+        case ActionTypes.ADD_DOCTORS:
+            return {
+                ...state,
+                doctors: state.doctors.concat(action.payload),
                 errorMsg: '',
                 isLoading: false
             }

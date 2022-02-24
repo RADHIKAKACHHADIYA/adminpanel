@@ -13,7 +13,7 @@ const medicineReducer = (state=initialvalue , action) => {
                 ...state,
                 medicine : [],
                 errormsg : '',
-                isLoding : false
+                isLoding : action.payload
             }
         case ActionType.FATCH_MEDICINE :
             return {
@@ -36,21 +36,21 @@ const medicineReducer = (state=initialvalue , action) => {
                 errormsg : '',
                 isLoding : false
             }
-            case ActionType.ADD_MEDICINE :
-                return{
-                    ...state,
-                    medicine : state.medicine.concat(action.payload),
-                    errormsg : '',
-                    isLoding : false
-                }
+        case ActionType.ADD_MEDICINE :
+            return{
+                ...state,
+                medicine : state.medicine.concat(action.payload),
+                errormsg : '',
+                isLoding : false
+            }
         case ActionType.EDIT_MEDICINE :
             return {
                 ...state,
-                madicine : state.medicine.map((l) => {
-                    if(l.id === action.payload.id) {
+                madicine : state.medicine.map((e) => {
+                    if(e.id === action.payload.id) {
                         return action.payload
                     } else {
-                        return l
+                        return e
                     }
                 }),
                 errormsg : '',

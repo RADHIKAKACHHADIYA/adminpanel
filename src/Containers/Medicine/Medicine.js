@@ -18,6 +18,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useSnackbar } from 'notistack';
 import { deleteMedicine, fetchmedicine } from '../../redux/action/medicine.action';
 import { useDispatch, useSelector } from 'react-redux';
+import Loder from '../../Components/Loder/Loder';
 
 // const orgData = [
 //     {
@@ -63,7 +64,6 @@ function Medicine(props) {
     const [data, setData] = useState([]);
     const [id, setId] = useState();
     const [edit , setEdit] = useState();
-
     const dispatch = useDispatch()
     const medicine = useSelector(state => state.medicine)
 
@@ -119,7 +119,7 @@ function Medicine(props) {
     const handleEdit = (id) => {
         // let localdata = JSON.parse(localStorage.getItem("medicine"));
 
-        let filterData = medicine.medicine.filter((l) => l.id === id)
+        let filterData = medicine.medicine.filter((d) => d.id === id)
 
         setEdit(filterData[0])
         setOpen(filterData)
@@ -152,27 +152,32 @@ function Medicine(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {medicine.medicine.map((row) => (
-                                <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">{row.price}</TableCell>
-                                    <TableCell align="right">{row.qunatity}</TableCell>
-                                    <TableCell align="right">{row.expiry}</TableCell>
-                                    <TableCell align="right">
-                                    <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="delete" onClick={() => {setdOpen(true) ; setId(row.id)}}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {
+                                !medicine.isLoading ?
+                                medicine.errorMsg === '' && medicine.medicine ?
+                                    medicine.medicine.map((row) => (
+                                        <TableRow
+                                            key={row.name}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell align="right">{row.price}</TableCell>
+                                            <TableCell align="right">{row.qunatity}</TableCell>
+                                            <TableCell align="right">{row.expiry}</TableCell>
+                                            <TableCell align="right">
+                                            <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="delete" onClick={() => {setdOpen(true) ; setId(row.id)}}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    )): <TableRow><TableCell className='text-info'>{medicine.errorMsg}</TableCell></TableRow>
+                                : <Loder message={"Please Wait"} />
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>

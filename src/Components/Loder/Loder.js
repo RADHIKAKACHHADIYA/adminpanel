@@ -1,10 +1,10 @@
 import React from 'react';
-import CircularProgressWithLabl from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Loder(props) {
     return (
         <div>
-            <CircularProgressWithLabl value={progress} />
+           <CircularProgress />
         </div>
     );
 }

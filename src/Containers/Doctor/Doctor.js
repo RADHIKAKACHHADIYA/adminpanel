@@ -17,50 +17,50 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useSnackbar } from 'notistack';
 import AddDoctor from './AddDoctor';
-import { deleteDocotrs, fetchDoctors } from '../../redux/action/doctor.action';
 import { useDispatch, useSelector } from 'react-redux';
 import Loder from '../../Components/Loder/Loder'
+import { deleteDoctors, fetchDoctors } from '../../redux/action/doctor.action';
 
-const drData = [
-    {
-        id: 101,
-        name: 'DR. jonas'
-    },
-    {
-        id: 102,
-        name: 'Dr. Desai'
-    },
-    {
-        id: 103,
-        name: 'Dr. Bankim'
-    },
-    {
-        id: 104,
-        name: 'Dr. R. R. Ramani'
-    },
-    {
-        id: 105,
-        name: 'Dr. Rehman'
-    },
-]
+// const drData = [
+//     {
+//         id: 101,
+//         name: 'DR. jonas'
+//     },
+//     {
+//         id: 102,
+//         name: 'Dr. Desai'
+//     },
+//     {
+//         id: 103,
+//         name: 'Dr. Bankim'
+//     },
+//     {
+//         id: 104,
+//         name: 'Dr. R. R. Ramani'
+//     },
+//     {
+//         id: 105,
+//         name: 'Dr. Rehman'
+//     },
+// ]
 function Doctor(props) {
     const [open, setOpen] = useState(false);
     const [dopen, setdOpen] = useState(false);
     const [data, setData] = useState([]);
     const [id, setId] = useState();
+    const [edit , setEdit] = useState();
     const dispatch = useDispatch();
     const doctors = useSelector(state => state.doctors);
 
     useEffect(
         () => {
             dispatch(fetchDoctors())
-
         },
         [])
 
     const handledelete = () => {
 
-        dispatch(deleteDocotrs(id))
+        dispatch(deleteDoctors(id))
 
         handleClose();
     }
@@ -114,6 +114,7 @@ function Doctor(props) {
                     <TableHead>
                         <TableRow>
                             <TableCell>doctors Name</TableCell>
+                            <TableCell align="right">Edit / Delete</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
