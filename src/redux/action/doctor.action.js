@@ -1,39 +1,14 @@
+import { fatchAllDoctorData } from "../../common/Apis/doctor_api";
 import * as ActionType from "../ActionType";
-import { baseUrl } from '../../url/baseUrl';
 
 export const fetchDoctors = () => (dispatch) => {
 
-    // dispatch(loadDoctors(true))
-
-    const axios = require('axios').default;
-
-    //const axios = require('axios');
-
-    const instance = axios.create ({
-        baseURL : "http://localhost:3001/",
-        timeout : 3000
-    })
-
-    console.log(instance)
     try {
-        instance.request({
-            url : 'doctor',
-            method : 'get'
-        })
-        .then (function(response) {
-            dispatch ({
-                type : ActionType.FETCH_DOCTORS,
-                payload : response.data
-            })
-            console.log(response)
-        })
-        .catch (function(error) {
-            console.log(error);
-        })
-        .then (function() {
-
-        });
+        fatchAllDoctorData()
+            .then(doctors => dispatch({ type: ActionType.FETCH_DOCTORS, payload: doctors }))
+            .catch(error => dispatch(errorDoctors(error)));
     } catch (error) {
+        // (error => dispatch(errorDoctors(error)))
         console.log(error)
     }
 
@@ -60,9 +35,11 @@ export const fetchDoctors = () => (dispatch) => {
 export const loadDoctors = (status) => (dispatch) => {
     dispatch({ type: ActionType.LOAD_DOCTORS, payload: status })
 }
+
 export const errorDoctors = (error) => (dispatch) => {
     dispatch({ type: ActionType.ERROR_DOCTORS, payload: error.message })
 }
+
 export const deleteDoctors = (id) => (dispatch) => {
 
 
@@ -70,30 +47,30 @@ export const deleteDoctors = (id) => (dispatch) => {
 
     //const axios = require('axios');
 
-    const instance = axios.create ({
-        baseURL : "http://localhost:3001/",
-        timeout : 3000
+    const instance = axios.create({
+        baseURL: "http://localhost:3001/",
+        timeout: 3000
     })
 
     console.log(instance)
     try {
         instance.request({
-            url : 'doctor/' + id,
-            method : 'delete'
+            url: 'doctor/' + id,
+            method: 'delete'
         })
-        .then (function(response) {
-            dispatch ({
-                type : ActionType.DELETE_DOCTORS,
-                payload : id
+            .then(function (response) {
+                dispatch({
+                    type: ActionType.DELETE_DOCTORS,
+                    payload: id
+                })
+                console.log(response)
             })
-            console.log(response)
-        })
-        .catch (function(error) {
-            console.log(error);
-        })
-        .then (function() {
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
 
-        });
+            });
     } catch (error) {
         console.log(error)
     }
@@ -121,36 +98,33 @@ export const deleteDoctors = (id) => (dispatch) => {
 export const addDoctors = (data) => (dispatch) => {
     const axios = require('axios').default;
 
-    //const axios = require('axios');
-
-    const instance = axios.create ({
-        baseURL : "http://localhost:3001/",
-        timeout : 3000
+    const instance = axios.create({
+        baseURL: "http://localhost:3001/",
+        timeout: 3000
     })
 
     console.log(instance)
     try {
         instance.request({
-            url : 'doctor/' + data,
-            method : 'post',
-            data: {
-                firstName: 'Fred',
-                lastName: 'Flintstone'
-              }
+            url: 'doctor/' + data,
+            method: 'post',
+            data: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
-        .then (function(response) {
-            dispatch ({
-                type : ActionType.DELETE_DOCTORS,
-                payload : data
+            .then(function (response) {
+                dispatch({
+                    type: ActionType.ADD_DOCTORS,
+                    payload: data
+                })
             })
-            console.log(response)
-        })
-        .catch (function(error) {
-            console.log(error);
-        })
-        .then (function() {
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
 
-        });
+            });
     } catch (error) {
         console.log(error)
     }
@@ -179,30 +153,59 @@ export const addDoctors = (data) => (dispatch) => {
     // .catch(error => dispatch(errorDoctors(error)));
 }
 
-
-
 export const editDoctors = (data) => (dispatch) => {
-    return fetch(baseUrl + 'doctor/' + data.id , {
-        method: 'delete',
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json"
-        }
+    const axios = require('axios').default;
+
+    const instance = axios.create({
+        baseURL: "http://localhost:3001/",
+        timeout: 3000
     })
-    .then(response => {
-        if (response.ok) {
-            return response;
-        } else {
-            var error = new Error('Error' + response.status + ':' + response.statusText);
-            error.response = response;
-            throw error;
-        }
-    },
-        error => {
-            var errmess = new Error(error.message);
-            throw errmess;
-        })
-    .then(response => response.json())
-    .then(dispatch({ type: ActionType.EDIT_DOCTORS, payload: data }))
-    .catch(error => dispatch(errorDoctors(error)));
+
+    // console.log(instance)
+    // try {
+    //     instance.request({
+    //         url: 'doctor/' + data + id,
+    //         method: 'put',
+    //         data: JSON.stringify(data),
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    //         .then(function (response) {
+    //             dispatch({
+    //                 type: ActionType.EDIT_DOCTORS_DOCTORS,
+    //                 payload: data
+    //             })
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         })
+    //         .then(function () {
+    //         });
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    //     return fetch(baseUrl + 'doctor/' + data.id , {
+    //         method: 'delete',
+    //         body: JSON.stringify(data),
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    //     .then(response => {
+    //         if (response.ok) {
+    //             return response;
+    //         } else {
+    //             var error = new Error('Error' + response.status + ':' + response.statusText);
+    //             error.response = response;
+    //             throw error;
+    //         }
+    //     },
+    //         error => {
+    //             var errmess = new Error(error.message);
+    //             throw errmess;
+    //         })
+    //     .then(response => response.json())
+    //     .then(dispatch({ type: ActionType.EDIT_DOCTORS, payload: data }))
+    //     .catch(error => dispatch(errorDoctors(error)));
 }
