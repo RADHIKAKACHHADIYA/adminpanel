@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router-dom';
-import './App.css';
+
 import Daseborad from './Containers/Daseborad/Daseborad';
 import Doctor from './Containers/Doctor/Doctor';
 import Medicine from './Containers/Medicine/Medicine';

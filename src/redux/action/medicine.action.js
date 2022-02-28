@@ -2,9 +2,9 @@
 import { baseUrl } from "../../url/baseUrl";
 import * as ActionType from "../ActionType";
 
-
 export const fetchmedicine = () => (dispatch) => {
     dispatch(loadingMedicine(true))
+    
     setTimeout(function () {
         return fetch(baseUrl + 'medicine')
             .then(response => {

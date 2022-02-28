@@ -15,7 +15,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useSnackbar } from 'notistack';
 import AddDoctor from './AddDoctor';
 import { useDispatch, useSelector } from 'react-redux';
 import Loder from '../../Components/Loder/Loder'
@@ -130,7 +129,7 @@ function Doctor(props) {
                                         {row.name}
                                     </TableCell>
                                     <TableCell align="right">
-                                        <IconButton aria-label="delete" onClick={() => handleEdit(row.id)}>
+                                        <IconButton aria-label="delete" className='text-primary' onClick={() => handleEdit(row.id)}>
                                             <EditIcon />
                                         </IconButton>
                                         <IconButton aria-label="delete" onClick={() => { setdOpen(true); setId(row.id) }}>

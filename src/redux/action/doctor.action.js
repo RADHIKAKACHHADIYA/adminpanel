@@ -1,14 +1,15 @@
-import { fatchAllDoctorData } from "../../common/Apis/doctor_api";
+import { addDoctorData, deleteDoctorData, fatchAllDoctorData, updeteDoctorData } from "../../common/Apis/doctor_api";
 import * as ActionType from "../ActionType";
 
 export const fetchDoctors = () => (dispatch) => {
+    const axios = require('axios').default;
 
     try {
         fatchAllDoctorData()
-            .then(doctors => dispatch({ type: ActionType.FETCH_DOCTORS, payload: doctors }))
+            .then(response => dispatch({ type: ActionType.FETCH_DOCTORS, payload: response.data }))
             .catch(error => dispatch(errorDoctors(error)));
     } catch (error) {
-        // (error => dispatch(errorDoctors(error)))
+        dispatch(errorDoctors(error));
         console.log(error)
     }
 
@@ -47,32 +48,12 @@ export const deleteDoctors = (id) => (dispatch) => {
 
     //const axios = require('axios');
 
-    const instance = axios.create({
-        baseURL: "http://localhost:3001/",
-        timeout: 3000
-    })
-
-    console.log(instance)
     try {
-        instance.request({
-            url: 'doctor/' + id,
-            method: 'delete'
-        })
-            .then(function (response) {
-                dispatch({
-                    type: ActionType.DELETE_DOCTORS,
-                    payload: id
-                })
-                console.log(response)
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            .then(function () {
-
-            });
+        deleteDoctorData(id)
+        .then(dispatch({ type: ActionType.DELETE_DOCTORS, payload: id }))
+        .catch(error => dispatch(errorDoctors(error)));
     } catch (error) {
-        console.log(error)
+        dispatch(errorDoctors(error));
     }
     // return fetch(baseUrl + 'doctor/' + id , {
     //     method: 'delete',
@@ -97,37 +78,14 @@ export const deleteDoctors = (id) => (dispatch) => {
 
 export const addDoctors = (data) => (dispatch) => {
     const axios = require('axios').default;
-
-    const instance = axios.create({
-        baseURL: "http://localhost:3001/",
-        timeout: 3000
-    })
-
-    console.log(instance)
-    try {
-        instance.request({
-            url: 'doctor/' + data,
-            method: 'post',
-            data: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(function (response) {
-                dispatch({
-                    type: ActionType.ADD_DOCTORS,
-                    payload: data
-                })
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-            .then(function () {
-
-            });
-    } catch (error) {
-        console.log(error)
-    }
+     
+        try {
+            addDoctorData(data)
+            .then(response => dispatch({type: ActionType.ADD_DOCTORS, payload: response.data}))
+            .catch(error => dispatch(errorDoctors(error)))
+        } catch (error) {
+            dispatch(errorDoctors(error));
+        }
     // return fetch(baseUrl + 'doctor', {
     //     method: 'post',
     //     body: JSON.stringify(data),
@@ -155,11 +113,15 @@ export const addDoctors = (data) => (dispatch) => {
 
 export const editDoctors = (data) => (dispatch) => {
     const axios = require('axios').default;
-
-    const instance = axios.create({
-        baseURL: "http://localhost:3001/",
-        timeout: 3000
-    })
+    
+    try {
+        updeteDoctorData(data)
+        .then(response => dispatch({type: ActionType.EDIT_DOCTORS, payload: response.data}))
+        .catch(error => dispatch(errorDoctors(error)))
+    } catch (error) {
+        dispatch(errorDoctors(error));
+    }
+   
 
     // console.log(instance)
     // try {
@@ -185,6 +147,10 @@ export const editDoctors = (data) => (dispatch) => {
     // } catch (error) {
     //     console.log(error)
     // }
+
+
+
+
     //     return fetch(baseUrl + 'doctor/' + data.id , {
     //         method: 'delete',
     //         body: JSON.stringify(data),

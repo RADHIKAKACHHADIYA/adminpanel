@@ -77,7 +77,7 @@ function Medicine(props) {
         let localdata = JSON.parse(localStorage.getItem("medicine"))
         if (localdata === null) {
             localdata = medicine.medicine
-            localStorage.setItem("medicine", JSON.stringify( medicine.medicine))
+            localStorage.setItem("medicine", JSON.stringify(medicine.medicine))
         } else {
             localdata = localdata
         }
