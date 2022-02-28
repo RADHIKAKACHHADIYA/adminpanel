@@ -146,7 +146,7 @@ function Medicine(props) {
                             <TableRow>
                                 <TableCell>Madicine Name</TableCell>
                                 <TableCell align="right">Price</TableCell>
-                                <TableCell align="right">qunatity</TableCell>
+                                <TableCell align="right">Qunatity</TableCell>
                                 <TableCell align="right">Expiry</TableCell>
                                 <TableCell align="right">Edit / Delete</TableCell>
                             </TableRow>
