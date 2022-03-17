@@ -67,6 +67,7 @@ function Medicine(props) {
     const dispatch = useDispatch()
     const medicine = useSelector(state => state.medicine)
 
+    console.log(medicine)
 
     useEffect(
         () => {
@@ -154,7 +155,7 @@ function Medicine(props) {
                         <TableBody>
                             {
                                 !medicine.isLoading ?
-                                medicine.errorMsg === '' && medicine.medicine ?
+                                medicine.errorMsg !== '' && medicine.medicine ?
                                     medicine.medicine.map((row) => (
                                         <TableRow
                                             key={row.name}

@@ -175,3 +175,4 @@ export const editDoctors = (data) => (dispatch) => {
     //     .then(dispatch({ type: ActionType.EDIT_DOCTORS, payload: data }))
     //     .catch(error => dispatch(errorDoctors(error)));
 }
+

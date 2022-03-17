@@ -47,7 +47,7 @@ function Doctor(props) {
     const [dopen, setdOpen] = useState(false);
     const [data, setData] = useState([]);
     const [id, setId] = useState();
-    const [edit , setEdit] = useState();
+    const [edit, setEdit] = useState();
     const dispatch = useDispatch();
     const doctors = useSelector(state => state.doctors);
 
@@ -107,7 +107,7 @@ function Doctor(props) {
                 </Button>
             </Box>
 
-            <AddDoctor openprops={open} handleClose={handleClose} loadData={loadData} edit={edit}/>
+            <AddDoctor openprops={open} handleClose={handleClose} loadData={loadData} edit={edit} />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -119,26 +119,26 @@ function Doctor(props) {
                     <TableBody>
                         {
                             !doctors.isLoading ?
-                            doctors.errorMsg === '' ?
-                            doctors.doctors.map((row) => (
-                                <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <IconButton aria-label="delete" className='text-primary' onClick={() => handleEdit(row.id)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="delete" onClick={() => { setdOpen(true); setId(row.id) }}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </TableCell>
-                                </TableRow>
-                            )) : <TableRow><TableCell className='text-info'>{doctors.errorMsg}</TableCell></TableRow>
-                            : <Loder message={"Please Wait"} />
+                                doctors.errorMsg === '' ?
+                                    doctors.doctors.map((row) => (
+                                        <TableRow
+                                            key={row.name}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {row.name}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <IconButton aria-label="delete" className='text-primary' onClick={() => handleEdit(row.id)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                                <IconButton aria-label="delete" onClick={() => { setdOpen(true); setId(row.id) }}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    )) : <TableRow><TableCell className='text-info'>{doctors.errorMsg}</TableCell></TableRow>
+                                : <Loder message={"Please Wait"} />
                         }
                     </TableBody>
                 </Table>

@@ -1,0 +1,8 @@
+- Patients.js  (Remove all localstorage func)
+- create action file and implement fetchPatient action in it.
+- create new action types
+- create saga file for patients
+- create an api for patients
+- use that saga in rootSaga
+- check data in Patients.js 
+- use that data for creating view

@@ -88,12 +88,12 @@ function AddDoctor({ openprops, handleClose, loadData , edit }) {
                             <TextField
                                 margin="dense"
                                 id="name"
-                                label="Medicine Name"
+                                label="doctor Name"
                                 type="text"
                                 fullWidth
                                 variant="standard"
                                 defaultValue={update ? update.name : ''}
-                                variant="standard"
+                                // variant="standard"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.name && touched.name)}
