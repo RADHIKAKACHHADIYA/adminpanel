@@ -15,7 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import AddDoctor from './AddDoctor';
+import AddDoctor from './addDoctor';
 import { useDispatch, useSelector } from 'react-redux';
 import Loder from '../../Components/Loder/Loder'
 import { deleteDoctors, fetchDoctors } from '../../redux/action/doctor.action';
@@ -108,6 +108,7 @@ function Doctor(props) {
             </Box>
 
             <AddDoctor openprops={open} handleClose={handleClose} loadData={loadData} edit={edit} />
+
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>

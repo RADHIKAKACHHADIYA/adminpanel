@@ -1,8 +1,8 @@
 import axios from "axios";
-import { baseUrl } from "../url/baseUrl";
+import { api, baseUrl } from "../url/baseUrl";
 
 export const axiosInstance = axios.create ({
-    baseURL : baseUrl,
+    baseURL : api,
     timeout : 3000
 })
 export const sentRequest = (config) => {
