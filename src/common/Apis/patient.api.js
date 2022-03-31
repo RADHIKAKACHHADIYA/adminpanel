@@ -1,4 +1,4 @@
-import { getRequest } from "../Requests";
+import { getRequest } from "../requast";
 
 export const fetchAllpatientsRequest = () => {
     return getRequest('users/');

@@ -1,15 +1,18 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import Api from '...'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { fetchAllpatientsRequest } from '../../common/Apis/patient.api';
+import { patientRetried } from '../action/patient.action';
+import * as ActionType from '../ActionType';
 
 function* fetchpatient(action) {
    try {
-      const user = yield call(Api.fetchUser, action.payload.userId);
-    //   yield put({type: "USER_FETCH_SUCCEEDED", user: user});
+      const user = yield call(fetchAllpatientsRequest);
+      console.log(user)
+      yield put(patientRetried(user.data.data));
    } catch (e) {
-      yield put({type: "USER_FETCH_FAILED", message: e.message});
+      // yield put({type: "USER_FETCH_FAILED", message: e.message});
    }
 }
 
-function* mySaga() {
-  yield takeEvery({type:  ActionType.FATCH_PATIENT }, fetchpatient);
+export function* patientsSaga() {
+  yield takeEvery(ActionType.FATCH_PATIENT , fetchpatient);
 }

@@ -23,11 +23,13 @@ function Patients() {
     const [open, setOpen] = useState(false);
     const [dopen, setdOpen] = useState(false);
     const [id, setId] = useState();
-    const [data , setData] = useState();
+    const [data, setData] = useState();
     const [edit, setEdit] = useState();
     const dispatch = useDispatch();
     const patients = useSelector(state => state.patients);
 
+    console.log(patients)
+    
     useEffect(
         () => {
             dispatch(fatchPatient())
@@ -37,7 +39,6 @@ function Patients() {
     const handledelete = () => {
         handleClose();
     }
-
 
     const handleClickOpen = () => {
         setOpen(true);

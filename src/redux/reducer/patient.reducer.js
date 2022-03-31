@@ -1,4 +1,4 @@
-import * as ActionType from "../ActionType";
+import * as  ActionType  from "../ActionType";
 
 const initialValue = {
     patients: [],
@@ -16,6 +16,7 @@ export const patientsReducer = (state = initialValue, action) => {
                 errorMsg: '',
                 isLoading: false
             }
+            case ActionType.
         default:
             return state;
     }

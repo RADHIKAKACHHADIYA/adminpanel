@@ -6,6 +6,7 @@ import Patients from './Containers/Patients/Patients';
 import Layout from './Components/Layout/Layout';
 import { Provider } from 'react-redux';
 import configureStore from './redux/store';
+import User from './Containers/User/User';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route  path="/doctor" component={Doctor}/>
             <Route  path="/medicine" component={Medicine}/>
             <Route  path="/patients" component={Patients}/>
+            <Route path="/user" component={User} />
         </Switch>
       </Layout>
       </Provider>
