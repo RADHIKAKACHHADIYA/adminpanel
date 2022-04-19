@@ -1,9 +1,9 @@
 import axios from "axios";
-import { api, baseUrl } from "../url/baseUrl";
+import { json } from "../url/baseUrl";
 
 export const axiosInstance = axios.create ({
-    baseURL : api,
-    timeout : 3000
+    baseURL : json,
+    timeout : 30000
 })
 export const sentRequest = (config) => {
     return axiosInstance.request(config)

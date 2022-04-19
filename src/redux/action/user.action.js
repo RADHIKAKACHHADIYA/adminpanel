@@ -5,7 +5,6 @@ export const  fetchUser = () => (dispatch) => {
 }
 
 export const RetriedUser = (data) => (dispatch) => {
-    console.log(data)
     dispatch({ type: ActionType.RETRIEVED_USER, payload: data})
 }
 export const deleteUser = (id) => (dispatch) => {

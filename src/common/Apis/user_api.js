@@ -1,9 +1,9 @@
 import { deleteRequest, getRequest } from "../requast";
 
 export const fetchuserRequest = () => {
-    return getRequest('users/');
+    return getRequest('comments/');
 }
 
 export const deleteUserRequest = (id) => {
-    return deleteRequest("users/" , id)
+    return deleteRequest("comments/" , id)
 }

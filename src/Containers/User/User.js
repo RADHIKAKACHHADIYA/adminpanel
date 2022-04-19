@@ -10,8 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../redux/action/user.action';
-import { deleteUser } from '../../redux/action/user.action';
+import { fetchUser, deleteUser } from '../../redux/action/user.action';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -28,7 +27,6 @@ const rows = [
 function User(props) {
     const [id, setId] = useState()
 
-
     const dispatch = useDispatch();
 
     useEffect(
@@ -37,8 +35,8 @@ function User(props) {
         },
         [])
 
-    const user = useSelector(state => state.user);
-    console.log(user);
+    const users = useSelector(state => state.user);
+    console.log(users);
 
     const handleDelete = () => {
         dispatch(deleteUser(id))
@@ -66,7 +64,7 @@ function User(props) {
                                 <TableCell align="right">{e.email}</TableCell>
                                 <TableCell align="right">{e.body}</TableCell>
                                 <TableCell align="center"  >
-                                    <IconButton sx={{ color: ' #dc3545' }} aria-label="delete" onClick={handleDelete} > 
+                                    <IconButton sx={{ color: ' #dc3545' }} aria-label="delete" onClick={handleDelete(id)} >
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>

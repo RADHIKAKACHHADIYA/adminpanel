@@ -6,7 +6,6 @@ const initialvalue ={
     isLoding : false ,
 }
 const medicineReducer = (state=initialvalue , action) => {
-    console.log(action)
     switch (action.type) {
         case ActionType.LODING_MEDICINE :
             return {

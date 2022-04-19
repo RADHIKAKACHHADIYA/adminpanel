@@ -22,6 +22,9 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { NavLink } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -105,7 +108,10 @@ export default function MiniDrawer({children}) {
       {to: '/' , label: "Daseborad" , icon: <DashboardIcon/>},
       {to: '/doctor' , label: "Doctor" , icon: <PersonRoundedIcon/>},
       {to: '/medicine' , label: "Medicine" ,icon: <LocalHospitalIcon/>},
-      {to: '/patients' , label: "Patients" , icon : <AccessibilityIcon/>}
+      {to: '/patients' , label: "Patients" , icon : <AccessibilityIcon/>},
+      {to: '/user' , label: "User" , icon : <PersonOutlineIcon/>},
+      {to: '/login' , label: "login" , icon : <AccountCircleIcon/>},
+
   ]
 
   return (
