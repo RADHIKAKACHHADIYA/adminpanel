@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import configureStore from './redux/store';
 import User from './Containers/User/User';
 import LoginUser from './Containers/LoginUser/LoginUser';
+import Slider from './Containers/slider/Slider';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route  path="/patients" component={Patients}/>
             <Route path="/user" component={User} />
             <Route path="/login" component={LoginUser} />
+            <Route path="/slider" component={Slider} />
         </Switch>
       </Layout>
       </Provider>

@@ -24,6 +24,7 @@ import { NavLink } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CollectionsIcon from '@mui/icons-material/Collections';
 
 const drawerWidth = 240;
 
@@ -111,6 +112,7 @@ export default function MiniDrawer({children}) {
       {to: '/patients' , label: "Patients" , icon : <AccessibilityIcon/>},
       {to: '/user' , label: "User" , icon : <PersonOutlineIcon/>},
       {to: '/login' , label: "login" , icon : <AccountCircleIcon/>},
+      {to: '/slider' , label: "Slider" , icon : <CollectionsIcon/>},
 
   ]
 
