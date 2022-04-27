@@ -1,29 +1,31 @@
-import * as React from 'react';
-import { Box, Button, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Button, IconButton, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteUserLogin, fetchUsersLogin, updateUserLogin } from '../../redux/action/login.action';
 
 export default function LoginUser() {
+  const [checked , setChecked] = useState() 
+
   const dispatch = useDispatch();
-    const login = useSelector(state => state.login);
+  const login = useSelector(state => state.login);
 
-    console.log(login.login)
+  console.log(login.login)
 
-    React.useEffect(
-        () => {
-            dispatch(fetchUsersLogin())
-        },
+  useEffect(
+    () => {
+      dispatch(fetchUsersLogin())
+    },
     [])
 
-    const handleDelete = (id) => {
-        dispatch(deleteUserLogin(id))
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteUserLogin(id))
+  }
 
-    const handleEdit = () => {
-        dispatch(updateUserLogin())
-    }
+  const handleEditSwitch = (data) => {
+    dispatch(updateUserLogin(data))
+  }
 
   return (
     <div>
@@ -53,14 +55,14 @@ export default function LoginUser() {
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell align="left">{m.email}</TableCell>
-                      <TableCell align="left">{m.password}</TableCell>
+                      <TableCell align="left">{m.status.toString()}</TableCell>
                       <TableCell>
                         <IconButton aria-label="delete" onClick={() => handleDelete(m.id)}>
                           <DeleteIcon />
                         </IconButton>
-                        <IconButton aria-label="edit" onClick={() => handleEdit(m.row)}>
-                          <EditIcon />
-                        </IconButton>
+                      </TableCell>
+                      <TableCell>
+                        <Switch checked={m.status} onChange={(e) => { handleEditSwitch(m); setChecked(e.target.value) }} />
                       </TableCell>
                     </TableRow>
                   ))

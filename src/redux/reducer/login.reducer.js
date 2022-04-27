@@ -7,7 +7,7 @@ const initialValue = {
 }
 
 export const authReducer = (state = initialValue, action) => {
-    console.log(action)
+    // console.log(action)
 
     switch (action.type) {
         case ActionTypes.FATCH_USERLOGIN:
@@ -27,7 +27,7 @@ export const authReducer = (state = initialValue, action) => {
         case ActionTypes.EDIT_USERLOGIN:
             return {
                 ...state,
-                madicine: state.login.map((e) => {
+                usreLogin: state.login.map((e) => {
                     if (e.id === action.payload) {
                         return action.payload
                     } else {
