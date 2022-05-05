@@ -3,49 +3,74 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import { Button, DialogContent } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
-import { addSlider, deleteSlider, fetchSlider } from '../../redux/action/slider.action';
+import { addSlider, deleteSlider, fetchSlider, updateSlider } from '../../redux/action/slider.action';
 import { useDispatch, useSelector } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, IconButton, Paper , Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 
 function Slider(props) {
     const [open, setOpen] = useState(false);
-    const [imgData, setImgData] = useState();
+    const [fileData, setFileData] = useState()
+    const [oldData, setOldData] = useState()
+    const [update, SetUpdate] = useState(false)
+    const [id, setId] = useState(false)
+    const [name, setName] = useState(false)
 
     const dispatch = useDispatch();
     const slider = useSelector(state => state.slider)
-    console.log(slider)
+    console.log(slider.slider)
 
     useEffect(
         () => {
             dispatch(fetchSlider())
         },
-    [])
+        [])
 
     const handleUpload = () => {
-        dispatch(addSlider(imgData))
+        dispatch(addSlider(fileData))
         handleClose()
     }
-    
-    const handleDelete = () => {
-        // dispatch(deleteSlider())
+
+    const handleDelete = (name , id) => {
+        console.log(name , id)
+        dispatch(deleteSlider(name , id))
+        setOpen(false)
+
     }
-    const handleClose = () => {
+    
+
+    const handleEdit = (oldData) => {
+        console.log(oldData)
+        setOpen(true);
+        setOldData(oldData)
+        SetUpdate(true)
+    }
+
+    const handleUpdetadata = () => {
+        dispatch(updateSlider(oldData, fileData))
+        console.log(oldData, fileData , "0rttyer")
+        SetUpdate(false)
         setOpen(false);
     }
 
     const handleClickOpen = () => {
         setOpen(true);
     };
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    console.log(slider.slider);
 
     return (
         <div>
             <Box sx={{
                 textAlign: 'center'
             }}>
-                <Button variant="outlined" onClick={handleClickOpen}>
+                <Button variant="outlined" onClick={() => handleClickOpen()}>
                     Add slider
                 </Button>
             </Box>
@@ -61,26 +86,29 @@ function Slider(props) {
                             </TableHead>
                             <TableBody>
                                 {
-                                    slider.slider !== undefined &&
-                                    slider.slider.map((m, i) => (
+                                    slider.slider.length > 0 &&
+                                    slider.slider.map((data, i) => {
+                                        console.log(data.id);
+                                      return (
                                         <TableRow
-                                            key={i}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell align="left">
-                                                <img  src={m.slider} width={100}   />
-                                                {/* {m.slider} */}
-                                            </TableCell>
-                                            <TableCell>
-                                                <IconButton aria-label="delete" onClick={() => handleDelete(m.id)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                            {/* <TableCell>
-                                                <Switch checked={m.status} onChange={(e) => { handleEditSwitch(m); setChecked(e.target.value) }} />
-                                            </TableCell> */}
-                                        </TableRow>
-                                    ))
+                                        key={i}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell align="left">
+                                            <img src={data.slider} width={100} />
+                                            {/* {m.slider} */}
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton aria-label="delete" onClick={() => handleDelete(data.name , data.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                            <IconButton onClick={() => { handleEdit(data); }} >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                      )
+                                      })
                                 }
                             </TableBody>
                         </Table>
@@ -101,14 +129,21 @@ function Slider(props) {
                         type='file'
                         id="outlined-basic"
                         variant="outlined"
-                        onChange={(e) => setImgData(e.target.files[0])}
+                        onChange={(e) => setFileData(e.target.files[0])}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>No</Button>
-                    <Button onClick={handleUpload} autoFocus>
-                        Upload
-                    </Button>
+                    {
+                        update ? 
+                            <Button onClick={() => handleUpdetadata()} variant="contained bg-dark text-light" autoFocus>
+                                UPDATE
+                            </Button>
+                        : 
+                            <Button onClick={() => handleUpload()} variant="contained bg-dark text-light" autoFocus>
+                                ADD
+                            </Button>
+                    }
                 </DialogActions>
             </Dialog>
         </div>

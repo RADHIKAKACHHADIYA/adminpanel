@@ -30,4 +30,4 @@ export const EDIT_USERLOGIN = "EDIT_USERLOGIN";
 export const ADD_SLIDER ="ADD_SLIDER"
 export const FATCH_SLIDER = "FATCH_SLIDER"
 export const DELETE_SLIDER= "DELETE_SLIDER"
-export const EDIT_SLIDER = "EDIT_SLIDER"
+export const UPDATE_SLIDER = "UPDATE_SLIDER"
